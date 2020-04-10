@@ -134,7 +134,7 @@ public class Chat implements Constants {
 
     public static void main(String[] args) {
         String server = args[0];//127.0.0.1
-        
+       
         ChatAccess access = new ChatAccess();
 
         JFrame frame = new GUI(access);

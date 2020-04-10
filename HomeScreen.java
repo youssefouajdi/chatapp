@@ -20,10 +20,11 @@ public class HomeScreen implements Constants {
         
         Object chosen = JOptionPane.showInputDialog(null, "Inscrivez vous: ", "Application de Chat ", JOptionPane.QUESTION_MESSAGE, null, options, initial);
         
-        
+        String key = JOptionPane.showInputDialog("Entrez votre cle ");
         if (chosen.equals("Server")) {
             //creation serveur
-            arguments = new String[]{};
+            arguments = new String[]{key};
+            
             new Server().main(arguments);
         } else if (chosen.equals("Client")) {
             
@@ -34,7 +35,7 @@ public class HomeScreen implements Constants {
             
             //creation client
             String IPServer = JOptionPane.showInputDialog("Entrez votre adresse IP");
-           String key = JOptionPane.showInputDialog("Entrez votre cle ");
+           
             arguments = new String[]{IPServer};
             new Chat();
             Chat.secret=key;
@@ -45,11 +46,7 @@ public class HomeScreen implements Constants {
         }
 
     }
-    
-    private static void Client(String key) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 	private static boolean available(int port) {
         Socket socket = null;

@@ -9,8 +9,9 @@ import java.util.Base64;
  
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
- 
+
 public class AES {
+	
     private static SecretKeySpec secretKey;
     private static byte[] key;
     public static void setKey(String myKey) 
@@ -58,7 +59,7 @@ public class AES {
         } 
         catch (Exception e) 
         {
-            System.out.println("Erreur de decryptage : " + e.toString());
+            System.out.println("vous disposez pas de la bonne cle" );
         }
         return null;
     }

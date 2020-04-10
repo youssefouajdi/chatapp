@@ -6,17 +6,15 @@ import java.net.*;
 public class Client extends Thread {
 
     private String clientName = null;
-    
     private DataInputStream inputStream = null;
     private PrintStream outputStream = null;
-   
+    private String secret=null;
     private Socket clientSocket = null;
-    
     private final Client[] threads;
     private int clientsCount;
 
-    public Client(Socket clientSocket, Client[] threads) {
-    	
+    public Client(Socket clientSocket, Client[] threads, String key) {
+    	this.secret=key;
         this.clientSocket = clientSocket;
         this.threads = threads;
         clientsCount = threads.length;
@@ -35,7 +33,7 @@ public class Client extends Thread {
             while (true) {
                 outputStream.println("Entrez votre nom d utilisateur.");
                
-                name = AES.decrypt(inputStream.readLine().trim(), "a");//null
+                name = AES.decrypt(inputStream.readLine().trim(), secret);//null
                 if (name.indexOf('@') == -1) {
                     break;
                 } else {
@@ -92,7 +90,7 @@ public class Client extends Thread {
                     synchronized (this) {
                         for (int i = 0; i < clientsCount; i++) {
                             if (threads[i] != null && threads[i].clientName != null) {
-                                threads[i].outputStream.println("<" + name + "> " + AES.decrypt(line, "a"));
+                                threads[i].outputStream.println("<" + name + "> " + AES.decrypt(line, secret));
                             }
                         }
                     }
