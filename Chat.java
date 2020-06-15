@@ -1,6 +1,7 @@
 package clientserverchat;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -86,7 +87,7 @@ public class Chat implements Constants {
             textArea.setEditable(false);
             textArea.setLineWrap(true);
             add(new JScrollPane(textArea), BorderLayout.CENTER);
-
+         
             Box box = Box.createHorizontalBox();
             add(box, BorderLayout.SOUTH);
             inputTextField = new JTextField();
@@ -139,11 +140,92 @@ public class Chat implements Constants {
 
         JFrame frame = new GUI(access);
         frame.setTitle("Chat application SERVER: " + server + ", PORT: " + DEFAULT_PORT);
+     // menubar 
+        JMenuBar mb; 
+        // JMenu 
+        JMenu x; 
+        // Menu items 
+         JMenuItem m1, m2, m3,m4,m5; 
+     // create a menubar 
+        mb = new JMenuBar(); 
+  
+        // create a menu 
+        x = new JMenu("Menu"); 
+  
+        // create menuitems 
+        m1 = new JMenuItem("APPEL"); 
+        m2 = new JMenuItem("TRANSFERT FICHIER "); 
+        m3 = new JMenuItem("transfer image"); 
+        m4 = new JMenuItem("transfer video/audio"); 
+        m5 = new JMenuItem("A propos"); 
+  
+        //action appel
+        m1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new server_voice();
+				server_voice.main(args);
+			}
+		});
+        
+        //transfert fichier
+        m2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+				int returnValue = jfc.showOpenDialog(null);
+				// int returnValue = jfc.showSaveDialog(null);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = jfc.getSelectedFile();
+					String a=selectedFile.getAbsolutePath();
+				FileClient fc = new FileClient("127.0.0.1", 1988, a);}
+			}
+		});
+        
+         //action transfert image
+        m3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+				int returnValue = jfc.showOpenDialog(null);
+				// int returnValue = jfc.showSaveDialog(null);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = jfc.getSelectedFile();
+					String a=selectedFile.getAbsolutePath();
+				FileClient fc = new FileClient("127.0.0.1", 1988, a);}
+			}
+		});
+        
+        //transfer video/audio
+        m4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+				int returnValue = j.showOpenDialog(null);
+				// int returnValue = jfc.showSaveDialog(null);
+				System.out.println("jgnk,");
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = j.getSelectedFile();
+					String a=selectedFile.getAbsolutePath();
+				FileClient fc = new FileClient("127.0.0.1", 1990, a);}
+			}
+		});
+        
+        // ajout des item au menu
+        x.add(m1); 
+        x.add(m2); 
+        x.add(m3);
+        x.add(m4);
+        x.add(m5);
+        
+        // ajout a la barre de menu
+        mb.add(x);
+        frame.setJMenuBar(mb); 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setVisible(true);
+     
 
         try {
             access.init(server, DEFAULT_PORT);

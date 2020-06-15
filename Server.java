@@ -15,11 +15,8 @@ public class Server implements Constants  {
     
     public static void main(String args[]) throws IOException {
     	String secret=args[0]; 
-            //port 8000
-            System.out.println(  "Actuellement vous utilisez le port "  + DEFAULT_PORT);
+          System.out.println( "Actuellement vous utilisez le port "+ DEFAULT_PORT);
             serverSocket = new ServerSocket(DEFAULT_PORT);
-       
-        ////edcrmefl
         //creation connection avec client
         while (true) {
             try {

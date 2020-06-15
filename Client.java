@@ -33,11 +33,11 @@ public class Client extends Thread {
             while (true) {
                 outputStream.println("Entrez votre nom d utilisateur.");
                
-                name = AES.decrypt(inputStream.readLine().trim(), secret);//null
+                name = AES.decrypt(inputStream.readLine().trim(), secret);
                 if (name.indexOf('@') == -1) {
                     break;
                 } else {
-                    outputStream.println("Tle nom ne doit pas contenir '@' .");
+                    outputStream.println("le nom ne doit pas contenir '@' .");
                 }
             }
 
@@ -59,14 +59,15 @@ public class Client extends Thread {
             //commencer la discussion
             while (true) {
                 String line = inputStream.readLine();
-                
+                System.out.println(line);
+                line=AES.decrypt(line, secret);
                 //verification si c est quitter
                 if (line.startsWith("/quitter")) {
                     break;
                 }
-                //check if message is private
+                //verification message privee
                 if (line.startsWith("@")) {
-                    //if line starts with @ split the line on words[0] = name and words[1] = message
+                    //if line starts with @ split the line on words[0] = nom and words[1] = message
                     String[] words = line.split("\\s", 2);
                     if (words.length > 1 && words[1] != null) {
                         words[1] = words[1].trim();
@@ -77,7 +78,7 @@ public class Client extends Thread {
                                     if (threads[i] != null && threads[i] != this && threads[i].clientName != null && threads[i].clientName.equals(words[0])) {
                                         threads[i].outputStream.println("<" + name + "> " + words[1]);
                                         //print this message to let the client know the private message was sent
-                                        this.outputStream.println(">" + name + "< " + words[1]);
+                                        this.outputStream.println(">" + name + "< " + words[1] );
                                         break;
                                     }
                                 }
@@ -85,19 +86,19 @@ public class Client extends Thread {
                         }
                     }
                 }
-                //the message is visible to all clients
+                //message pour tous les clients
                 else {
                     synchronized (this) {
                         for (int i = 0; i < clientsCount; i++) {
                             if (threads[i] != null && threads[i].clientName != null) {
-                                threads[i].outputStream.println("<" + name + "> " + AES.decrypt(line, secret));
+                                threads[i].outputStream.println("<" + name + "> " + line);
                             }
                         }
                     }
                 }
             }
             
-            //notify other clients that client is leaving chat room
+            //notification des autres utilisateurs que un utilisateur a quitter
             synchronized (this) {
                 for (int i = 0; i < clientsCount; i++) {
                     if (threads[i] != null && threads[i] != this && threads[i].clientName != null) {
@@ -107,7 +108,7 @@ public class Client extends Thread {
             }
             outputStream.println("*** au revoir " + name + " ***");
 
-            //set the value of current thread to null and make free place for other thread to start
+            //liberer de l espace quand un utilisateur se deconnecte
             synchronized (this) {
                 for (int i = 0; i < clientsCount; i++) {
                     if (threads[i] == this) {
