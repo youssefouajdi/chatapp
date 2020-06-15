@@ -1,10 +1,9 @@
-# Travail realise par 
+# chatapp
+## Travail realise par 
   - Youssef Ouajdi
   - Chaimae Ech cherif
   - Ayoub Outiti
-# chatapp
-
-## applicationchat-certificat 
+  
 # le projet contient 3 etapes :
   - signature electronique
   - certificat electronique
